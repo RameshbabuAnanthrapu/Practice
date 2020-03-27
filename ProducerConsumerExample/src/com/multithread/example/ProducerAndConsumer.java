@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public class ProducerAndConsumer {
 	
 	LinkedList<Integer> list =  new LinkedList<Integer>();
-	int cap = 2;
+	int cap = 5;
 	
 	
 	public void produce() throws InterruptedException {
