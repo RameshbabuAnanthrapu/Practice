@@ -14,6 +14,7 @@ public class ProducerAndConsumer {
 		
 		int item = 0;
 		
+		
 		while(true) {
 			
 			synchronized (this) {
