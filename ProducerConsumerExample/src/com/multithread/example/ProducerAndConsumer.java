@@ -12,8 +12,7 @@ public class ProducerAndConsumer {
 		
 		System.out.println("PRODCUER INVOKED");
 		
-		int item = 0;
-		
+		int item = 0;		
 		
 		while(true) {
 			
