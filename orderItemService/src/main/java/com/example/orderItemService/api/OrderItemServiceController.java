@@ -26,7 +26,7 @@ import com.example.orderItemService.model.OrderItemServiceResponse;
 import com.example.orderItemService.service.OrderItemDataService;
 
 @RestController
-@RequestMapping("/item")
+@RequestMapping("/orderItem-management")
 public class OrderItemServiceController {
 
 	@Autowired
@@ -35,7 +35,7 @@ public class OrderItemServiceController {
 	@Autowired
 	private OrderItemDataService dataService;
 
-	@PostMapping("/create")
+	@PostMapping("/managed-orderItems")
 	public ResponseEntity<OrderItemServiceResponse> createOrderItem(@Valid @RequestBody List<OrderItemModel> items) {
 		
 
@@ -50,7 +50,7 @@ public class OrderItemServiceController {
 
 	}
 
-	@GetMapping("/getAllItems")
+	@GetMapping("/managed-orderItems")
 	public ResponseEntity<OrderItemServiceResponse> getAllItems() {
 		List<OrderItemModel> itemList = mapperService.mapEntityToModel(dataService.fetchOrderItems());
 		OrderItemServiceResponse response = new OrderItemServiceResponse();
@@ -58,7 +58,7 @@ public class OrderItemServiceController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@GetMapping("/getItemById/{orderId}")
+	@GetMapping("/managed-orderItems/{orderId}")
 	public ResponseEntity<OrderItemServiceResponse> getItemById(@NotNull @NotEmpty @PathVariable(name = "orderId") Long id) {
 		
 		List<OrderItemModel> itemModelList = mapperService.mapEntityToModel(dataService.fetchOrderItemById(id));
