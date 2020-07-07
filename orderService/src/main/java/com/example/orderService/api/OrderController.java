@@ -33,7 +33,7 @@ import com.example.orderService.service.OrderDataService;
 import com.example.orderService.service.OrderItemProxyService;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/order-management")
 public class OrderController {
 
 	@Autowired
@@ -45,7 +45,7 @@ public class OrderController {
 	@Autowired
 	private OrderDataService dataService;
 
-	@PostMapping("/create")
+	@PostMapping("/manage-orders")
 	public ResponseEntity<OrderServiceResponse> createOrder(@Valid @RequestBody OrderModel orderModel) {
 
 		OrderDetails order = dataService.createOrder(mapperService.mapModelToEntity(orderModel));
@@ -70,7 +70,7 @@ public class OrderController {
 
 	}
 
-	@GetMapping("/getOrder/{orderId}")
+	@GetMapping("/manage-orders/{orderId}")
 	public ResponseEntity<OrderServiceResponse> getOrderById(@NotEmpty @PathVariable(name = "orderId") long id) {
 		OrderServiceResponse response = new OrderServiceResponse();
 		OrderDetails order = dataService.getOrder(id);
