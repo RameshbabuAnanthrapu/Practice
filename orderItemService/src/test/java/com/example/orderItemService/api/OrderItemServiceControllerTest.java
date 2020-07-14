@@ -56,7 +56,7 @@ public class OrderItemServiceControllerTest {
 		Mockito.when(dataService.createOrderItem(ArgumentMatchers.anyList())).thenReturn(buildOrderItems());
 		Mockito.when(mapperService.mapEntityToModel(ArgumentMatchers.anyList())).thenReturn(buildOrderItemModel());
 
-		MvcResult result = mockMvc.perform(post("/orderItem-management/managed-orderItems")
+		MvcResult result = mockMvc.perform(post("/orders/orderItems")
 				.content(getMapper().writeValueAsString(buildOrderItems()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andReturn();
 		String responseString = result.getResponse().getContentAsString();
@@ -68,8 +68,9 @@ public class OrderItemServiceControllerTest {
 	@Test
 	public void testGetAllItems() throws Exception {
 		Mockito.when(dataService.fetchOrderItems()).thenReturn(buildOrderItems());
+		Mockito.when(mapperService.mapEntityToModel(ArgumentMatchers.anyList())).thenReturn(buildOrderItemModel());
 
-		MvcResult result = mockMvc.perform(get("/orderItem-management/managed-orderItems")
+		MvcResult result = mockMvc.perform(get("/orders/orderItems")
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andReturn();
 
 		String responseString = result.getResponse().getContentAsString();
@@ -87,7 +88,7 @@ public class OrderItemServiceControllerTest {
 		Mockito.when(dataService.fetchOrderItemById(ArgumentMatchers.anyLong())).thenReturn(buildOrderItems());
 		Mockito.when(mapperService.mapEntityToModel(ArgumentMatchers.anyList())).thenReturn(buildOrderItemModel());
 
-		MvcResult result = mockMvc.perform(get("/orderItem-management/managed-orderItems/1")
+		MvcResult result = mockMvc.perform(get("/orders/1/orderItems")
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andReturn();
 
 		String responseString = result.getResponse().getContentAsString();
@@ -111,7 +112,7 @@ public class OrderItemServiceControllerTest {
 		emtyList.add(emptyModel);
 
 		mockMvc.perform(
-				post("/orderItem-management/managed-orderItems").content(getMapper().writeValueAsString(emptyModel))
+				post("/orders/orderItems").content(getMapper().writeValueAsString(emptyModel))
 						.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest());
 

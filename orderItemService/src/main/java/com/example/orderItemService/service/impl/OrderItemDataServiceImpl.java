@@ -24,7 +24,7 @@ public class OrderItemDataServiceImpl implements OrderItemDataService {
 	public List<OrderItem> createOrderItem(List<OrderItem> item) {
 		List<OrderItem> itemsList = new ArrayList<>();
 
-		item.forEach(i -> itemsList.add(itemRepo.saveAndFlush(i)));
+		item.forEach(i -> itemsList.add(itemRepo.save(i)));
 
 		return itemsList;
 	}

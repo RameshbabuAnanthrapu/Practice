@@ -1,6 +1,5 @@
 package com.example.orderItemService.api;
 
-
 import java.util.List;
 
 import javax.validation.Valid;
@@ -26,7 +25,7 @@ import com.example.orderItemService.model.OrderItemServiceResponse;
 import com.example.orderItemService.service.OrderItemDataService;
 
 @RestController
-@RequestMapping("/orderItem-management")
+@RequestMapping("/orders")
 public class OrderItemServiceController {
 
 	@Autowired
@@ -35,14 +34,13 @@ public class OrderItemServiceController {
 	@Autowired
 	private OrderItemDataService dataService;
 
-	@PostMapping("/managed-orderItems")
+	@PostMapping("/orderItems")
 	public ResponseEntity<OrderItemServiceResponse> createOrderItem(@Valid @RequestBody List<OrderItemModel> items) {
-		
 
 		List<OrderItem> itemList = dataService.createOrderItem(mapperService.mapModelToEntity(items));
 
 		List<OrderItemModel> reponseModel = mapperService.mapEntityToModel(itemList);
-		
+
 		OrderItemServiceResponse response = new OrderItemServiceResponse();
 		response.setOrderItems(reponseModel);
 
@@ -50,7 +48,7 @@ public class OrderItemServiceController {
 
 	}
 
-	@GetMapping("/managed-orderItems")
+	@GetMapping("/orderItems")
 	public ResponseEntity<OrderItemServiceResponse> getAllItems() {
 		List<OrderItemModel> itemList = mapperService.mapEntityToModel(dataService.fetchOrderItems());
 		OrderItemServiceResponse response = new OrderItemServiceResponse();
@@ -58,11 +56,12 @@ public class OrderItemServiceController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@GetMapping("/managed-orderItems/{orderId}")
-	public ResponseEntity<OrderItemServiceResponse> getItemById(@NotNull @NotEmpty @PathVariable(name = "orderId") Long id) {
-		
+	@GetMapping("/{orderId}/orderItems")
+	public ResponseEntity<OrderItemServiceResponse> getItemById(
+			@NotNull @NotEmpty @PathVariable(name = "orderId") Long id) {
+
 		List<OrderItemModel> itemModelList = mapperService.mapEntityToModel(dataService.fetchOrderItemById(id));
-		
+
 		OrderItemServiceResponse response = new OrderItemServiceResponse();
 		response.setOrderItems(itemModelList);
 		return new ResponseEntity<>(response, HttpStatus.OK);
