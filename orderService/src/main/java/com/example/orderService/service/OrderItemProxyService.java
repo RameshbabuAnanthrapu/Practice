@@ -16,10 +16,10 @@ import com.example.orderService.model.OrderItemServiceResponse;
 @FeignClient(name="orderItesm-service",url = "${orderItem.service.uri}")
 public interface OrderItemProxyService {
 
-	@RequestMapping(method = RequestMethod.POST, value = "/orderItem-management/managed-orderItems")
+	@RequestMapping(method = RequestMethod.POST, value = "/order/orderItems")
 	ResponseEntity<OrderItemServiceResponse>  createItem(@RequestBody List<OrderItemModel> itemList);
 	
-	@RequestMapping(method = RequestMethod.GET, value="/orderItem-management/managed-orderItems/{orderId}")
+	@RequestMapping(method = RequestMethod.GET, value="/order/{orderId}/orderItems")
 	ResponseEntity<OrderItemServiceResponse> getItems(@PathVariable(name="orderId") long id);
 
 }

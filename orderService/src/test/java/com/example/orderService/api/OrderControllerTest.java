@@ -78,7 +78,7 @@ public class OrderControllerTest {
 		Mockito.when(itemProxy.createItem(ArgumentMatchers.anyList())).thenReturn(mockItemResponse);
 
 		MvcResult mvcResult = mockMvc
-				.perform(post("/order-management/manage-orders").content(getObjectMapper().writeValueAsString(model))
+				.perform(post("/order-management/orders").content(getObjectMapper().writeValueAsString(model))
 						.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 				.andReturn();
 
@@ -104,7 +104,7 @@ public class OrderControllerTest {
 				.thenReturn(mockItemResponse);
 
 		mockMvc.perform(
-				post("/order-management/manage-orders").content(getObjectMapper().writeValueAsString(emtyObject))
+				post("/order-management/orders").content(getObjectMapper().writeValueAsString(emtyObject))
 						.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest());
 
@@ -123,7 +123,7 @@ public class OrderControllerTest {
 		Mockito.when(itemProxy.getItems(ArgumentMatchers.anyLong())).thenReturn(itemResponse);
 		Mockito.when(mapperService.mapEntityToModel(ArgumentMatchers.any(OrderDetails.class))).thenReturn(model);
 		MvcResult mvcResult = mockMvc.perform(
-				get("/order-management/manage-orders/1").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+				get("/order-management/orders/1").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 				.andReturn();
 		String resultJson = mvcResult.getResponse().getContentAsString();
 		OrderServiceResponse serviceRespopnse = getObjectMapper().readValue(resultJson, OrderServiceResponse.class);
@@ -135,6 +135,7 @@ public class OrderControllerTest {
 	private OrderModel buildOrderModel() {
 
 		OrderModel model = new OrderModel();
+		model.setOrderId(1);
 		model.setCustomerName("TestCustomer");
 		model.setShippingAddress("Test Address");
 		OrderItemModel item1 = new OrderItemModel();

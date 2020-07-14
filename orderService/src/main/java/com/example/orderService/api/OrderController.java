@@ -45,7 +45,7 @@ public class OrderController {
 	@Autowired
 	private OrderDataService dataService;
 
-	@PostMapping("/manage-orders")
+	@PostMapping("/orders")
 	public ResponseEntity<OrderServiceResponse> createOrder(@Valid @RequestBody OrderModel orderModel) {
 
 		OrderDetails order = dataService.createOrder(mapperService.mapModelToEntity(orderModel));
@@ -70,7 +70,7 @@ public class OrderController {
 
 	}
 
-	@GetMapping("/manage-orders/{orderId}")
+	@GetMapping("/orders/{orderId}")
 	public ResponseEntity<OrderServiceResponse> getOrderById(@NotEmpty @PathVariable(name = "orderId") long id) {
 		OrderServiceResponse response = new OrderServiceResponse();
 		OrderDetails order = dataService.getOrder(id);
