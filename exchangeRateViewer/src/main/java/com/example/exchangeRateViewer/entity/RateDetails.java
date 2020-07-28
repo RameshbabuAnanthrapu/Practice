@@ -1,6 +1,7 @@
 package com.example.exchangeRateViewer.entity;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +30,7 @@ public class RateDetails {
 	private BigDecimal rate;
 	
 	@Column(name="DATE")
-	private String date;
+	private Date date;
 
 	public String getBase() {
 		return base;
@@ -48,13 +49,12 @@ public class RateDetails {
 		this.rate = rate;
 	}
 
-	
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
