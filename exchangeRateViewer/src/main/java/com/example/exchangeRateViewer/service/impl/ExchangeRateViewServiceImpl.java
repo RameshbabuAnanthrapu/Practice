@@ -1,5 +1,6 @@
 package com.example.exchangeRateViewer.service.impl;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class ExchangeRateViewServiceImpl implements ExchangeRateViewService {
 			RateModel rateModel =  new RateModel();
 			rateModel.setCurrencyCode(r.getCurrency());
 			rateModel.setDate(r.getDate().toString());
-			rateModel.setExChangeRate(r.getRate());
+			rateModel.setExChangeRate( r.getRate());
 			rateModelList.add(rateModel);
 			model.setBase(r.getBase());
 			

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
 
 
 
@@ -27,6 +28,7 @@ public class RateDetails {
 	private String currency;
 	
 	@Column(name="EX_RATE")
+	@Digits(integer = 3, fraction = 5)
 	private BigDecimal rate;
 	
 	@Column(name="DATE")

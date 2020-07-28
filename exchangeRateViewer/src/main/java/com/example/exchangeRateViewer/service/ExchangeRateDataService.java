@@ -10,5 +10,6 @@ public interface ExchangeRateDataService {
 
 	List<RateDetails> loadExchangeRates(List<RateDetails> details);
 	List<RateDetails> getExchangeRatesByDate(Date date);
+	void removeOldrecords();
 
 }

@@ -1,5 +1,6 @@
 package com.example.exchangeRateViewer.service.impl;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -28,7 +29,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 @Service
 public class ExchangeRateLoadServiceImpl implements ExchangeRateLoadService {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(ExchangeRateLoadServiceImpl.class);
 
 	@Autowired
@@ -39,9 +40,9 @@ public class ExchangeRateLoadServiceImpl implements ExchangeRateLoadService {
 
 	@Override
 	public ExchangeRateModel uploadExchangeRates(String userAgent, String symbols) {
-		
-		LOG.info("ExchangeRateLoadServiceImpl :: uploadExchangeRates");
 
+		LOG.info("ExchangeRateLoadServiceImpl :: uploadExchangeRates");
+		clearOldrecords();
 		LocalDate currentDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
 		LocalDate pastOneYear = currentDate.minusYears(1).with(TemporalAdjusters.firstDayOfMonth());
 		ExternalApiResponse response = null;
@@ -53,38 +54,38 @@ public class ExchangeRateLoadServiceImpl implements ExchangeRateLoadService {
 				.isBefore(currentDate); date = date.with(TemporalAdjusters.firstDayOfNextMonth())) {
 
 			response = proxy.getExchangeRatesByDate(userAgent, symbols, date.toString());
-			if(ObjectUtils.isEmpty(response)) {
-				throw new ApplicationException("no records found from externalAPI" , HttpStatus.FAILED_DEPENDENCY);
+			if (ObjectUtils.isEmpty(response)) {
+				throw new ApplicationException("no records found from externalAPI", HttpStatus.FAILED_DEPENDENCY);
 			}
 			model.setBase(response.getBase());
 
 			List<RateDetails> ratesList = new ArrayList<>();
 			Optional<JsonNode> optionalNode = Optional.ofNullable(response.getRates());
-			if(optionalNode.isPresent()) {
-			Iterator<Entry<String, JsonNode>> jsonEntries = response.getRates().fields();
+			if (optionalNode.isPresent()) {
+				Iterator<Entry<String, JsonNode>> jsonEntries = response.getRates().fields();
 
-			while (jsonEntries.hasNext()) {
+				while (jsonEntries.hasNext()) {
 
-				RateDetails rates = new RateDetails();
-				RateModel rateModel = new RateModel();
-				Entry<String, JsonNode> e = jsonEntries.next();
-				rates.setCurrency(e.getKey());
-				rates.setRate(e.getValue().decimalValue());
-				rates.setBase(response.getBase());
-				rates.setDate(Date.valueOf(LocalDate.parse(response.getDate())));
-				ratesList.add(rates);
+					RateDetails rates = new RateDetails();
+					RateModel rateModel = new RateModel();
+					Entry<String, JsonNode> e = jsonEntries.next();
+					rates.setCurrency(e.getKey());
+					rates.setRate(e.getValue().decimalValue());
+					rates.setBase(response.getBase());
+					rates.setDate(Date.valueOf(LocalDate.parse(response.getDate())));
+					ratesList.add(rates);
 
-				rateModel.setCurrencyCode(e.getKey());
-				rateModel.setExChangeRate(e.getValue().decimalValue());
-				rateModel.setDate(response.getDate());
-				ratesModelList.add(rateModel);
+					rateModel.setCurrencyCode(e.getKey());
+					rateModel.setExChangeRate(e.getValue().decimalValue());
+					rateModel.setDate(response.getDate());
+					ratesModelList.add(rateModel);
 
-			}
+				}
 			}
 			model.setRates(ratesModelList);
 
 			dataService.loadExchangeRates(ratesList);
-			
+
 			LOG.info("ExchangeRateLoadServiceImpl :: records updated to DB");
 
 		}
@@ -92,6 +93,10 @@ public class ExchangeRateLoadServiceImpl implements ExchangeRateLoadService {
 		return model;
 	}
 
-	
+	private void clearOldrecords() {
+
+		dataService.removeOldrecords();
+
+	}
 
 }

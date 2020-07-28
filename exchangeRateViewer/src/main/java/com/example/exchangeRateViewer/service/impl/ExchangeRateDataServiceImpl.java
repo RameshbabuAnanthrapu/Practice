@@ -18,8 +18,6 @@ public class ExchangeRateDataServiceImpl implements ExchangeRateDataService {
 
 	@Override
 	public List<RateDetails> loadExchangeRates(List<RateDetails> details) {
-		
-		System.out.println("Size before save all"+ details.size());
 
 		List<RateDetails> insertedRates = repo.saveAll(details);
 
@@ -33,6 +31,13 @@ public class ExchangeRateDataServiceImpl implements ExchangeRateDataService {
 	public List<RateDetails> getExchangeRatesByDate(Date date) {
 		List<RateDetails> rates = repo.findExchangeRatesByDate(date);
 		return rates;
+	}
+	
+
+	@Override
+	public void removeOldrecords() {
+		repo.deleteAll();
+
 	}
 
 }
